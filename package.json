@@ -1,0 +1,25 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "description": "api",
+  "main": "main.js",
+  "scripts": {
+    "build": "npx tsc",
+    "build:watch": "npx tsc --watch",
+    "start": "node dist/main.js",
+    "start:watch": "rm -rf ./dist && concurrently \"npm run build\" \"ENV NODE_TLS_REJECT_UNAUTHORIZED=0 npx nodemon dist/main.js\"",
+    "test": "npm run test"
+  },
+  "author": "Jacob",
+  "license": "ISC",
+  "dependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.9.0",
+    "express": "^4.18.2",
+    "typescript": "^5.2.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1",
+    "ts-node": "^10.9.1"
+  }
+}
