@@ -1,21 +1,38 @@
 import { Request, Response } from 'express';
 import * as express from "express";
+import axios from 'axios';
 
 const app = express();
 const port = 3001;
 
 app.use(express.json());
 
+const OPENAI_API_KEY = 'YOUR_OPENAI_API_KEY'; // Replace with your actual API key
+
 app.get('/', (req: Request, res: Response) => {
   res.send('Hello, this is the chatbot API.');
 });
 
-app.post('/chat', (req: Request, res: Response) => {
+app.post('/chat', async (req: Request, res: Response) => {
   const userMessage = req.body.message;
-  // Implement your chatbot logic here
-  // Respond to the user's message
+  
+  // Make a request to the OpenAI API with the user's message
+  const response = await axios.post(
+    'https://api.openai.com/v1/engines/davinci-codex/completions',
+    {
+      prompt: userMessage,
+      max_tokens: 50, // Adjust based on your requirements
+    },
+    {
+      headers: {
+        'Authorization': `Bearer ${OPENAI_API_KEY}`,
+      },
+    }
+  );
 
-  res.json({ reply: 'This is a sample response from the chatbot.' });
+  const botReply = response.data.choices[0].text;
+
+  res.json({ reply: botReply });
 });
 
 app.listen(port, () => {
